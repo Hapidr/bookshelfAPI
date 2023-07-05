@@ -79,4 +79,11 @@ const addBook = (request, h) => {
   return response;
 };
 
-module.exports = { addBook };
+const getAllBooks = () => ({
+  status: "success",
+  data: {
+    book,
+  },
+});
+
+module.exports = { addBook, getAllBooks };
