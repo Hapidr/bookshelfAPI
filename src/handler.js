@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const { nanoid } = require("nanoid");
-const book = require("./books");
+const books = require("./books");
 
 const addBook = (request, h) => {
   const {
@@ -34,9 +34,9 @@ const addBook = (request, h) => {
     updatedAt,
   };
 
-  book.push(newBook);
+  books.push(newBook);
 
-  const isSuccess = book.filter((b) => b.id === id).length > 0;
+  const isSuccess = books.filter((b) => b.id === id).length > 0;
 
   //   Memeriksa apakah books berhasil ditambahkan
   if (isSuccess) {
@@ -82,14 +82,18 @@ const addBook = (request, h) => {
 const getAllBooks = () => ({
   status: "success",
   data: {
-    book,
+    books: books.map((b) => ({
+      id: b.id,
+      name: b.name,
+      publisher: b.publisher,
+    })),
   },
 });
 
 const getSpecifiedBook = (request, h) => {
   const { id } = request.params;
 
-  const bookId = book.filter((b) => b.id === id)[0];
+  const bookId = books.filter((b) => b.id === id)[0];
 
   // validasi keberadaan buku
   if (bookId !== undefined) {
