@@ -33,6 +33,26 @@ const addBook = (request, h) => {
     insertedAt,
     updatedAt,
   };
+  // Debugging start from here
+  // validasi nama books
+  if (!name) {
+    const response = h.response({
+      status: "fail",
+      message: "Gagal menambahkan buku. Mohon isi nama buku",
+    });
+    response.code(400);
+    return response;
+  }
+  // validasi readPage
+  if (readPage > pageCount) {
+    const response = h.response({
+      status: "fail",
+      message:
+        "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
+    });
+    response.code(400);
+    return response;
+  }
 
   books.push(newBook);
 
@@ -40,25 +60,6 @@ const addBook = (request, h) => {
 
   //   Memeriksa apakah books berhasil ditambahkan
   if (isSuccess) {
-    // validasi nama books
-    if (!name) {
-      const response = h.response({
-        status: "fail",
-        message: "Gagal menambahkan buku. Mohon isi nama buku",
-      });
-      response.code(400);
-      return response;
-    }
-    // validasi readPage
-    if (readPage > pageCount) {
-      const response = h.response({
-        status: "fail",
-        message:
-          "Gagal menambahkan buku. readPage tidak boleh lebih besar dari pageCount",
-      });
-      response.code(400);
-      return response;
-    }
     // validasi berhasil
     const response = h.response({
       status: "success",
@@ -78,6 +79,7 @@ const addBook = (request, h) => {
   response.code(500);
   return response;
 };
+// Ending here
 
 const getAllBooks = () => ({
   status: "success",
