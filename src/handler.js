@@ -33,7 +33,6 @@ const addBook = (request, h) => {
     insertedAt,
     updatedAt,
   };
-  // Debugging start from here
   // validasi nama books
   if (!name) {
     const response = h.response({
@@ -79,7 +78,6 @@ const addBook = (request, h) => {
   response.code(500);
   return response;
 };
-// Ending here
 
 const getAllBooks = () => ({
   status: "success",
@@ -93,26 +91,25 @@ const getAllBooks = () => ({
 });
 
 const getSpecifiedBook = (request, h) => {
-  const { id } = request.params;
+  const { bookId } = request.params;
 
-  const bookId = books.filter((b) => b.id === id)[0];
-
+  const book = books.filter((b) => b.id === bookId)[0];
   // validasi keberadaan buku
-  if (bookId !== undefined) {
+  if (book !== undefined) {
     const response = h.response({
       status: "success",
       data: {
-        bookId,
+        book,
       },
     });
     response.code(200);
     return response;
   }
-
   const response = h.response({
     status: "fail",
     message: "Buku tidak ditemukan",
   });
+  console.log(book);
   response.code(404);
   return response;
 };
