@@ -79,16 +79,76 @@ const addBook = (request, h) => {
   return response;
 };
 
-const getAllBooks = () => ({
-  status: "success",
-  data: {
-    books: books.map((b) => ({
-      id: b.id,
-      name: b.name,
-      publisher: b.publisher,
-    })),
-  },
-});
+const getAllBooks = (request, h) => {
+  const { name, reading, finished } = request.query;
+
+  // validasi name
+  if (name !== undefined) {
+    const response = h.response({
+      status: "success",
+      data: {
+        books: books
+          .filter((b) => b.name.toLowerCase().includes(name.toLowerCase()))
+          .map((b) => ({
+            id: b.id,
+            name: b.name,
+            publisher: b.publisher,
+          })),
+      },
+    });
+    response.code(200);
+    return response;
+  }
+
+  // validasi reading
+  if (reading !== undefined) {
+    const response = h.response({
+      status: "success",
+      data: {
+        books: books
+          .filter((b) => b.reading === (reading === "1"))
+          .map((b) => ({
+            id: b.id,
+            name: b.name,
+            publisher: b.publisher,
+          })),
+      },
+    });
+    response.code(200);
+    return response;
+  }
+
+  // validasi finished
+  if (finished !== undefined) {
+    const response = h.response({
+      status: "success",
+      data: {
+        books: books
+          .filter((b) => b.finished === (finished === "1"))
+          .map((b) => ({
+            id: b.id,
+            name: b.name,
+            publisher: b.publisher,
+          })),
+      },
+    });
+    response.code(200);
+    return response;
+  }
+  // jika tidak memasukkan query parameter
+  const response = h.response({
+    status: "success",
+    data: {
+      books: books.map((b) => ({
+        id: b.id,
+        name: b.name,
+        publisher: b.publisher,
+      })),
+    },
+  });
+  response.code(200);
+  return response;
+};
 
 const getSpecifiedBook = (request, h) => {
   const { bookId } = request.params;
